@@ -1,186 +1,661 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>NewsPulse - Latest News</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: white;
-            line-height: 1.6;
-        }
+    :root {
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --text: #182235;
+      --muted: #64748b;
+      --accent: #e63946;
+      --header: #101827;
+      --border: #e2e8f0;
+    }
 
-        header {
-            background: #1e293b;
-            padding: 20px;
-            text-align: center;
-        }
+    body.dark {
+      --bg: #0b1220;
+      --card: #151f30;
+      --text: #f1f5f9;
+      --muted: #a7b4c8;
+      --border: #2b3749;
+    }
 
-        header h1 {
-            color: #38bdf8;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background .2s, color .2s;
+    }
 
-        nav {
-            margin-top: 10px;
-        }
+    header {
+      background: var(--header);
+      color: white;
+      padding: 16px 5%;
+    }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-        }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-        nav a:hover {
-            color: #38bdf8;
-        }
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+    }
 
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-        }
+    .logo span {
+      color: #ff4655;
+    }
 
-        .hero h2 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
 
-        .hero span {
-            color: #38bdf8;
-        }
+    .header-actions button {
+      padding: 9px 12px;
+      border: 1px solid #536176;
+      border-radius: 7px;
+      color: white;
+      background: transparent;
+      cursor: pointer;
+    }
 
-        .hero p {
-            color: #cbd5e1;
-            margin-bottom: 25px;
-        }
+    .tagline {
+      color: #cbd5e1;
+      font-size: 13px;
+      margin-top: 3px;
+    }
 
-        .btn {
-            display: inline-block;
-            background: #38bdf8;
-            color: #0f172a;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    nav {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      padding-top: 17px;
+    }
 
-        section {
-            padding: 50px 20px;
-            text-align: center;
-        }
+    nav button {
+      flex-shrink: 0;
+      color: #e2e8f0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      padding-bottom: 5px;
+    }
 
-        section h2 {
-            color: #38bdf8;
-            margin-bottom: 20px;
-        }
+    nav button.active,
+    nav button:hover {
+      color: #ff6470;
+      border-bottom: 2px solid #ff4655;
+    }
 
-        .card {
-            background: #1e293b;
-            margin: 15px auto;
-            padding: 20px;
-            border-radius: 12px;
-            max-width: 400px;
-        }
+    .breaking {
+      background: var(--accent);
+      color: white;
+      padding: 10px 5%;
+      font-size: 14px;
+    }
 
-        .card h3 {
-            margin-bottom: 10px;
-        }
+    .breaking strong {
+      margin-right: 8px;
+    }
 
-        #contact p {
-            margin: 10px;
-        }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 28px auto;
+    }
 
-        footer {
-            background: #1e293b;
-            text-align: center;
-            padding: 20px;
-            color: #cbd5e1;
-        }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
 
-        @media (max-width: 480px) {
-            .hero h2 {
-                font-size: 28px;
-            }
+    .section-title h1 {
+      font-size: 27px;
+    }
 
-            nav a {
-                margin: 0 5px;
-                font-size: 14px;
-            }
-        }
-    </style>
+    .section-title h1 span {
+      color: var(--accent);
+    }
+
+    .search-box {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      min-width: 0;
+      flex: 1;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .search-box button {
+      padding: 12px 18px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .featured {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      margin-bottom: 38px;
+    }
+
+    .featured-image {
+      min-height: 280px;
+      background:
+        linear-gradient(transparent, rgba(0,0,0,.7)),
+        url("https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80")
+        center/cover;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 25px;
+      color: white;
+    }
+
+    .label {
+      display: inline-block;
+      width: fit-content;
+      background: var(--accent);
+      color: white;
+      padding: 4px 9px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .featured-image h2 {
+      font-size: clamp(23px, 3vw, 34px);
+      line-height: 1.3;
+    }
+
+    .featured-side {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .side-story {
+      flex: 1;
+      padding: 18px;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .side-story h3 {
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .side-story p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .news-card {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: transform .2s;
+    }
+
+    .news-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .news-card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      background: var(--border);
+    }
+
+    .news-content {
+      padding: 17px;
+    }
+
+    .category {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .news-content h3 {
+      margin: 8px 0;
+      font-size: 19px;
+      line-height: 1.4;
+    }
+
+    .news-content p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 35px 10px;
+      color: var(--muted);
+    }
+
+    .newsletter {
+      margin-top: 45px;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      background: var(--header);
+      color: white;
+    }
+
+    .newsletter p {
+      color: #cbd5e1;
+      margin: 8px 0 18px;
+    }
+
+    .newsletter form {
+      display: flex;
+      max-width: 450px;
+      margin: auto;
+      gap: 8px;
+    }
+
+    .newsletter input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border-radius: 7px;
+      border: none;
+    }
+
+    .newsletter button {
+      background: var(--accent);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 25px 5%;
+      background: var(--header);
+      color: #cbd5e1;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 850px) {
+      .featured {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-side {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .news-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 540px) {
+      .container {
+        width: 92%;
+      }
+
+      .news-grid,
+      .featured-side {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title h1 {
+        font-size: 22px;
+      }
+
+      .news-card img {
+        height: 210px;
+      }
+
+      .featured-image {
+        min-height: 250px;
+      }
+
+      .newsletter {
+        padding: 22px 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <header>
+    <div class="topbar">
+      <div>
+        <div class="logo">News<span>Pulse.</span></div>
+        <p class="tagline">Har khabar par nazar</p>
+      </div>
 
-    <header>
-        <h1>My Portfolio</h1>
+      <div class="header-actions">
+        <button id="themeBtn" type="button">🌙 Theme</button>
+      </div>
+    </div>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+    <nav aria-label="News categories">
+      <button class="active" data-category="All">Home</button>
+      <button data-category="India">India</button>
+      <button data-category="World">World</button>
+      <button data-category="Technology">Technology</button>
+      <button data-category="Business">Business</button>
+      <button data-category="Sports">Sports</button>
+      <button data-category="Entertainment">Entertainment</button>
+    </nav>
+  </header>
 
-    <section class="hero" id="home">
-        <h2>Hello, I'm <span>Your Name</span></h2>
-        <p>I'm learning web development and building cool websites.</p>
-        <a href="#projects" class="btn">View My Projects</a>
+  <div class="breaking">
+    <strong>● NEWS UPDATE</strong>
+    <span>NewsPulse par padhein latest headlines aur top stories.</span>
+  </div>
+
+  <main class="container">
+    <div class="section-title">
+      <h1>Top <span>Stories</span></h1>
+      <span id="today"></span>
+    </div>
+
+    <form class="search-box" id="searchForm">
+      <input id="searchInput" type="search"
+        placeholder="Search news..." aria-label="Search news">
+      <button type="submit">Search</button>
+    </form>
+
+    <section class="featured" aria-label="Featured stories">
+      <div class="featured-image">
+        <span class="label">FEATURED</span>
+        <h2>Welcome to NewsPulse</h2>
+        <p>Discover stories that matter to you.</p>
+      </div>
+
+      <div class="featured-side">
+        <article class="side-story">
+          <span class="category">Technology</span>
+          <h3>Technology is changing the way we live and work</h3>
+          <p>Sample headline · Demo story</p>
+        </article>
+
+        <article class="side-story">
+          <span class="category">India</span>
+          <h3>Explore important developments across India</h3>
+          <p>Sample headline · Demo story</p>
+        </article>
+
+        <article class="side-story">
+          <span class="category">Sports</span>
+          <h3>Follow the latest action from the world of sports</h3>
+          <p>Sample headline · Demo story</p>
+        </article>
+      </div>
     </section>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <div class="card">
-            <p>
-                Hi! I'm a beginner web developer.
-                I'm learning HTML, CSS and JavaScript
-                to create amazing websites.
-            </p>
-        </div>
+    <div class="section-title">
+      <h1>Latest <span>News</span></h1>
+      <span id="resultCount"></span>
+    </div>
+
+    <section class="news-grid" id="newsGrid"></section>
+    <div class="empty" id="emptyMessage">
+      <h2>No news found</h2>
+      <p>Try another keyword or category.</p>
+    </div>
+
+    <section class="newsletter">
+      <h2>Stay Updated!</h2>
+      <p>Get news updates by joining our newsletter demo.</p>
+      <form id="newsletterForm">
+        <input type="email" placeholder="Enter your email"
+          aria-label="Email address" required>
+        <button type="submit">Subscribe</button>
+      </form>
+      <p id="newsletterMessage" aria-live="polite"></p>
     </section>
+  </main>
 
-    <section id="projects">
-        <h2>My Projects</h2>
+  <footer>
+    <p>© <span id="year"></span> NewsPulse. All rights reserved.</p>
+    <p>Demo website · Sample stories, not verified live news.</p>
+  </footer>
 
-        <div class="card">
-            <h3>My First Website</h3>
-            <p>A simple website made using HTML and CSS.</p>
-        </div>
+  <script>
+    const news = [
+      {
+        title: "India: Important Developments to Watch",
+        category: "India",
+        description: "A sample story card for news about India. Replace this with a verified report.",
+        date: "Demo story",
+        image: "photo-1529107386315-e1a2ed48a620"
+      },
+      {
+        title: "World News: Events Around the Globe",
+        category: "World",
+        description: "A sample international news story. Add the latest verified details before publishing.",
+        date: "Demo story",
+        image: "photo-1521295121783-8a321d551ad2"
+      },
+      {
+        title: "New Technology Trends to Explore",
+        category: "Technology",
+        description: "Discover technology topics, innovations and digital developments.",
+        date: "Demo story",
+        image: "photo-1518770660439-4636190af475"
+      },
+      {
+        title: "Business and Markets: Key Topics",
+        category: "Business",
+        description: "A placeholder for business updates, market reports and company news.",
+        date: "Demo story",
+        image: "photo-1460925895917-afdab827c52f"
+      },
+      {
+        title: "Sports: The Action Continues",
+        category: "Sports",
+        description: "Add verified match reports, tournament updates and sports analysis here.",
+        date: "Demo story",
+        image: "photo-1461896836934-ffe607ba8211"
+      },
+      {
+        title: "Entertainment: What's Trending",
+        category: "Entertainment",
+        description: "A sample entertainment story for movies, television and culture.",
+        date: "Demo story",
+        image: "photo-1489599849927-2ee91cede3ba"
+      },
+      {
+        title: "Digital Learning and Education",
+        category: "India",
+        description: "Education-related sample news. Replace it with a sourced report.",
+        date: "Demo story",
+        image: "photo-1503676260728-1c00da094a0b"
+      },
+      {
+        title: "The Future of Science and Innovation",
+        category: "Technology",
+        description: "Explore scientific discoveries and innovation with reliable sources.",
+        date: "Demo story",
+        image: "photo-1518770660439-4636190af475"
+      },
+      {
+        title: "Global Business: Ideas and Opportunities",
+        category: "Business",
+        description: "A placeholder for verified economic and business coverage.",
+        date: "Demo story",
+        image: "photo-1486406146926-c627a92ad1ab"
+      }
+    ];
 
-        <div class="card">
-            <h3>Future Project</h3>
-            <p>More exciting projects coming soon!</p>
-        </div>
-    </section>
+    const grid = document.getElementById("newsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const resultCount = document.getElementById("resultCount");
+    const emptyMessage = document.getElementById("emptyMessage");
 
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Email: your-email@example.com</p>
-        <p>GitHub: github.com/your-username</p>
-    </section>
+    let activeCategory = "All";
 
-    <footer>
-        <p>&copy; 2026 My Portfolio. All rights reserved.</p>
-    </footer>
+    function renderNews() {
+      const keyword = searchInput.value.trim().toLowerCase();
 
-    <script>
-        console.log("Welcome to my portfolio!");
+      const filtered = news.filter(item => {
+        const matchesCategory =
+          activeCategory === "All" ||
+          item.category === activeCategory;
 
-        const button = document.querySelector(".btn");
+        const matchesSearch =
+          (item.title + " " + item.description + " " +
+            item.category).toLowerCase().includes(keyword);
 
-        button.addEventListener("click", function () {
-            console.log("Projects button clicked!");
+        return matchesCategory && matchesSearch;
+      });
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="news-card">
+          <img
+            src="https://images.unsplash.com/${item.image}?auto=format&fit=crop&w=700&q=80"
+            alt="${item.category} news illustration"
+            loading="lazy"
+          >
+          <div class="news-content">
+            <span class="category">${item.category}</span>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+            <div class="meta">
+              <span>NewsPulse</span>
+              <span>${item.date}</span>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      resultCount.textContent = filtered.length + " stories";
+      emptyMessage.style.display =
+        filtered.length ? "none" : "block";
+    }
+
+    document.querySelectorAll("nav button").forEach(button => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category;
+
+        document.querySelectorAll("nav button").forEach(btn => {
+          btn.classList.toggle("active", btn === button);
         });
-    </script>
 
+        renderNews();
+      });
+    });
+
+    document.getElementById("searchForm")
+      .addEventListener("submit", event => {
+        event.preventDefault();
+        renderNews();
+      });
+
+    searchInput.addEventListener("input", renderNews);
+
+    document.getElementById("themeBtn")
+      .addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+
+        document.getElementById("themeBtn").textContent =
+          document.body.classList.contains("dark")
+            ? "☀️ Theme"
+            : "🌙 Theme";
+      });
+
+    document.getElementById("newsletterForm")
+      .addEventListener("submit", event => {
+        event.preventDefault();
+
+        document.getElementById("newsletterMessage")
+          .textContent =
+            "Thanks! This demo does not send or save emails.";
+
+        event.target.reset();
+      });
+
+    document.getElementById("today").textContent =
+      new Date().toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    renderNews();
+  </script>
 </body>
-</html>
+          </html>
